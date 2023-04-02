@@ -8,9 +8,7 @@ import schema from './schema';
 const getProductsList: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
   try {
     const productsList = await getProducts();
-    return formatJSONResponse({
-      result: productsList,
-    }); 
+    return formatJSONResponse({ productsList }); 
   } catch (error) {
     return formatJSONResponse({ message: 'Unknown error.' }, 500);
   }
