@@ -12,7 +12,7 @@ const getProductsList: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async
       result: productsList,
     }); 
   } catch (error) {
-    return formatJSONResponse({ message: 'Unknown error.' });
+    return formatJSONResponse({ message: 'Unknown error.' }, 500);
   }
   
 };
