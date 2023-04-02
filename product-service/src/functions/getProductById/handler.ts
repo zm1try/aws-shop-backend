@@ -1,8 +1,8 @@
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
 import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
-import getProducts from 'src/utils/getProducts';
-import { ProductNotFoundError } from 'src/errors/productNotFoundError';
+import getProducts from '../../utils/getProducts';
+import { ProductNotFoundError } from '../../errors/productNotFoundError';
 
 import schema from './schema';
 
@@ -11,6 +11,7 @@ const getProductById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async 
     const productsList = await getProducts();
     const { pathParameters: { id: productId } } = event;
     const product = productsList.find(item => item.id === productId);
+    if (!product) throw new ProductNotFoundError(); 
     return formatJSONResponse({ product }); 
   } catch (error) {
     const isProductNotFoundError = error instanceof ProductNotFoundError;
