@@ -16,7 +16,6 @@ describe('test getProductById function', () => {
     it('should not return product and should return statusCode 404', async () => {
         const mockEvent: any = { pathParameters: { id: 1 }, headers: { 'Content-Type': 'text/json' } };
         const result = await getProductById(mockEvent, mockContext);
-        console.dir(result);
         const { product: responceProduct } = JSON.parse(result.body);
         expect(responceProduct).toBeUndefined;
         expect(result.statusCode).toBe(404);

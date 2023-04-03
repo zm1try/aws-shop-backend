@@ -2,7 +2,7 @@ import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
 import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
 import getProducts from '../../utils/getProducts';
-import { ProductNotFoundError } from '../../errors/productNotFoundError';
+import { ProductNotFoundError } from '@errors/productNotFoundError';
 
 import schema from './schema';
 
