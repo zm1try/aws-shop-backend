@@ -5,6 +5,7 @@
       "@functions/*": ["src/functions/*"],
       "@functions/getProductById/*": ["src/functions/getProductById/*"],
       "@functions/getProductsList/*": ["src/functions/getProductsList/*"],
+      "@functions/createProduct/*": ["src/functions/createProduct/*"],
       "@libs/*": ["src/libs/*"],
       "@errors/*": ["src/errors/*"]
     }

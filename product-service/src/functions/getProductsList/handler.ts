@@ -1,15 +1,16 @@
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
 import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
-import getProducts from '../../utils/getProducts';
+import getProductsCards from '../../utils/getProductsCards';
 
 import schema from './schema';
 
 const getProductsList: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
   try {
-    const productsList = await getProducts();
+    const productsList = await getProductsCards();
     return formatJSONResponse({ productsList }); 
   } catch (error) {
+    console.log('can not get products');
     return formatJSONResponse({ message: 'Unknown error.' }, 500);
   }
   
