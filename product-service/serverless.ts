@@ -2,6 +2,7 @@ import type { AWS } from '@serverless/typescript';
 import getProductsList from '@functions/getProductsList';
 import getProductById from '@functions/getProductById';
 import createProduct from '@functions/createProduct';
+import config from './config.json';
 
 const serverlessConfiguration: AWS = {
   service: 'product-service',
@@ -21,6 +22,7 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
       DYNAMODB_PRODUCTS_TABLE: '${self:service}-products-${sls:stage}',
       DYNAMODB_STOCKS_TABLE: '${self:service}-stocks-${sls:stage}',
+      ...config,
     },
     iam: {
       role: {
@@ -38,6 +40,7 @@ const serverlessConfiguration: AWS = {
             Resource: [
               "arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-products-${sls:stage}",
               "arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-stocks-${sls:stage}",
+              "arn:aws:rds:us-east-1:305357593429:cluster:database-1",
             ],
           },
         ]
@@ -116,7 +119,7 @@ const serverlessConfiguration: AWS = {
       bundle: true,
       minify: true,
       sourcemap: true,
-      exclude: ['aws-sdk'],
+      exclude: ['aws-sdk', 'pg-native'],
       target: 'node14',
       define: { 'require.resolve': undefined },
       platform: 'node',

@@ -4,26 +4,28 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 const createProductCard = async (productData): Promise<boolean> => {
     console.log('try to create product');
-    
+
     const id = uuidv4();
     const { title, description, price, count } = productData;
 
-    const ProductScanParams = {
-        TableName: process.env.DYNAMODB_PRODUCTS_TABLE,
-        Item: { id, title, description, price },
-    };
+    const transaction = dynamodb.transactWrite({
+        TransactItems: [
+          {
+            Put: {
+              Item: { id, title, description, price },
+              TableName: process.env.DYNAMODB_PRODUCTS_TABLE,
+            },
+          },
+          {
+            Put: {
+              Item: { product_id: id, count },
+              TableName: process.env.DYNAMODB_STOCKS_TABLE,
+            },
+          },
+        ],
+    }).promise();
 
-    const StockScanParams = {
-        TableName: process.env.DYNAMODB_STOCKS_TABLE,
-        Item: { product_id: id, count },
-    };
-
-    const promises = [
-        dynamodb.put(ProductScanParams).promise(),
-        dynamodb.put(StockScanParams).promise(),
-    ];
-
-    return Promise.all(promises)
+    return transaction
     .then(() => {
         console.log('product created');
         return true;
