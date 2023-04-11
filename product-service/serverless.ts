@@ -40,7 +40,6 @@ const serverlessConfiguration: AWS = {
             Resource: [
               "arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-products-${sls:stage}",
               "arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-stocks-${sls:stage}",
-              "arn:aws:rds:us-east-1:305357593429:cluster:database-1",
             ],
           },
         ]
