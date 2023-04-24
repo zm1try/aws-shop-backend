@@ -1,0 +1,7 @@
+{
+    "BUCKET_NAME": "your_bucket_name",
+    "REGION": "your_region",
+    "UPLOAD_FOLDER": "folder_name",
+    "PARSED_FOLDER": "folder_name",
+    "EXPIRATION_TIME": "expiration_time"
+}
