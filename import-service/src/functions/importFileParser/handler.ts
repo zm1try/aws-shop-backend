@@ -1,26 +1,40 @@
 
 import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
-import { S3 } from 'aws-sdk';
+import { S3, SQS } from 'aws-sdk';
 import csvParser from 'csv-parser';
 import { S3Event } from 'aws-lambda'; 
-import { BUCKET_NAME, PARSED_FOLDER, UPLOAD_FOLDER, REGION } from '../../../config.json';
+import { PARSED_FOLDER, UPLOAD_FOLDER, REGION } from '../../../config.json';
 
 const importFileParser = async (event: S3Event) => {
   try {
     console.log(`Start parsing products from event: ${JSON.stringify(event)}`);
+
     const s3Instance = new S3({ region: REGION });
+    const sqsInstance = new SQS();
+    const queueUrl = process.env.SQS_URL;
+
     const { Records: records } = event;
     const notEmptyRecords = records.filter(record => Boolean(record?.s3?.object?.size));
+
     const recordPromiseArray = notEmptyRecords.map(record => {
       const { s3: { bucket: { name: bucketName }, object: { key: objectKey } } } = record;
+
       const productParsingStream = s3Instance
         .getObject({ Bucket: bucketName, Key: objectKey })
         .createReadStream()
         .pipe(csvParser());
+
       const logRecord = async (data) => {
         console.log(`Product: ${JSON.stringify(data)}`);
+        await sqsInstance
+        .sendMessage({
+          QueueUrl: queueUrl,
+          MessageBody: JSON.stringify(data),
+        })
+        .promise();
       };
+
       const recordProcessingPromises = [];
       productParsingStream.on('data', (data) => {
         recordProcessingPromises.push(logRecord(data));
