@@ -9,3 +9,5 @@ jspm_packages
 .esbuild
 
 config.json
+sqsConfig.json
+snsConfig.json

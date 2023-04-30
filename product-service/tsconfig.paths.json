@@ -6,6 +6,7 @@
       "@functions/getProductById/*": ["src/functions/getProductById/*"],
       "@functions/getProductsList/*": ["src/functions/getProductsList/*"],
       "@functions/createProduct/*": ["src/functions/createProduct/*"],
+      "@functions/catalogBatchProcess/*": ["src/functions/catalogBatchProcess/*"],
       "@libs/*": ["src/libs/*"],
       "@errors/*": ["src/errors/*"]
     }

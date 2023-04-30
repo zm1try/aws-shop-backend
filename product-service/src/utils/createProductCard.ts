@@ -12,13 +12,13 @@ const createProductCard = async (productData): Promise<boolean> => {
         TransactItems: [
           {
             Put: {
-              Item: { id, title, description, price },
+              Item: { id, title, description, price: +price },
               TableName: process.env.DYNAMODB_PRODUCTS_TABLE,
             },
           },
           {
             Put: {
-              Item: { product_id: id, count },
+              Item: { product_id: id, count: +count },
               TableName: process.env.DYNAMODB_STOCKS_TABLE,
             },
           },
