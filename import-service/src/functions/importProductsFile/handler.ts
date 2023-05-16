@@ -18,7 +18,7 @@ const importProductsFile: ValidatedEventAPIGatewayProxyEvent<typeof schema> = as
 
     return formatJSONResponse(urlForUpload);
   } catch(error) {
-    return formatJSONResponse({ messagw: 'Unkonow error' }, 500);
+    return formatJSONResponse({ message: 'Unkonow error' }, 500);
   }
 };
 
